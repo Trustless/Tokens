@@ -53,7 +53,7 @@ This is how the current shared functionality of [TokenClient.sol](contracts/Toke
 
 ```
 ## 📦 Token data layout
- [Token](contracts/TokenData.sol) represents for fungibles a quantity of tokens, and for non-fungibles an identificable token. [TokenSet](contracts/TokenData.sol) represents for non-fungible a set of unique tokens. The token id is of type `bytes32` instead of `uint256` to support more powerful NFTs.
+ [Token](contracts/TokenData.sol) represents for fungibles a quantity of tokens, and for non-fungibles an identifiable token. [TokenSet](contracts/TokenData.sol) represents for non-fungible a set of unique tokens. The token id is of type `bytes32` instead of `uint256` to support more powerful NFTs.
 
  ```solidity
 struct Token
