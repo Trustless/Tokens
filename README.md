@@ -1,18 +1,26 @@
 <p style="font-style: italic">⚠️Not audited⚠️</p>
 
+We intend to deploy a Proxy Upgradable Trustless system on every EVM-chain on the same address governed by Trustless DAO
+
 <h1>Token Factory</h1>
 <table align="center">
    <tr><td /><td>ERC20</td><td>ERC777</td><td>ERC721</td><td>1155</td></tr>
    <tr><td>Deploy</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
    <tr><td>Deploy Wrapped</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-   <tr><td>Import as Wrapped</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
 </table>
+Each deployment utilizes MinimumProxyContract methodology.
 
 <h1>Token Registry</h1>
-
+   <table>
+      <tr><td>Trustlessly Registered</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Imported as Wrapped</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+   </table>
+   
 <h1>Token Trading</h1>
+Essentially an internally 1155 uniswap
 
 <h1>DAO</h1>
+A modular system of governance contracts so that different requirements may be satisfied by writing simplified modules using Silidity inheritance
 
 <h1>Token Client</h1> 
 <h3>A token aggregator to develop standard-agnostic token operations</h3> 
