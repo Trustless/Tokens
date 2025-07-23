@@ -10,16 +10,17 @@ contract TokenERC20 is TokenAbstraction
 
     function _isStandard(address contractAddress) internal view override virtual returns(bool){
         try IERC165(contractAddress).supportsInterface(type(IERC20).interfaceId) returns (bool result){
-            return result;
+            if(result){
+                return true;
+            }
         }catch{}
-            bool success;
-            bytes memory data;
-            (success, data) = contractAddress.staticcall(abi.encodeWithSignature("totalSupply()"));
-            if(!success) {
+
+        bool success;
+        (success, ) = contractAddress.staticcall(abi.encodeWithSignature("totalSupply()"));
+        if(!success) {
             return false;
         }
-        (success, data) = contractAddress.staticcall(abi.encodeWithSignature("balanceOf(address)", msg.sender));
-        // keep checking?
+        (success, ) = contractAddress.staticcall(abi.encodeWithSignature("balanceOf(address)", msg.sender));
         if(!success) {
             return false;
         }
