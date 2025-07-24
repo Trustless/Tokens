@@ -1,42 +1,69 @@
-<p style="font-style: italic">⚠️Not audited⚠️</p>
+# Token Client & Factory
 
-We intend to deploy a Proxy Upgradable Trustless system on every EVM-chain on the same address governed by Trustless DAO
+*⚠️ Not audited*
 
-<h1>Token Factory</h1>
-<table align="center">
-   <tr><td /><td>ERC20</td><td>ERC777</td><td>ERC721</td><td>1155</td></tr>
-   <tr><td>Deploy</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-   <tr><td>Deploy Wrapped</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-</table>
+We intend to deploy a proxy upgradable trustless system on every EVM chain at the same address governed by the Trustless DAO.
+
+## Table of Contents
+- [Features](#features)
+- [Token Client](#token-client)
+- [Monolithic Token Factory](#monolithic-token-factory)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+### Token Factory
+|               | ERC20 | ERC777 | ERC721 | 1155 |
+|---------------|:----:|:----:|:----:|:----:|
+| Deploy        | ✓ | ✓ | ✓ | ✓ |
+| Deploy Wrapped| ✓ | ✓ | ✓ | ✓ |
+
 Each deployment utilizes MinimumProxyContract methodology.
 
-<h1>Token Registry</h1>
-   <table>
-      <tr><td>Trustlessly Registered</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-      <tr><td>Imported as Wrapped</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-   </table>
-   
-<h1>Token Trading</h1>
-Essentially an internally 1155 uniswap
+### Token Registry
+|                     | ERC20 | ERC777 | ERC721 | 1155 |
+|---------------------|:----:|:----:|:----:|:----:|
+| Trustlessly Registered | ✓ | ✓ | ✓ | ✓ |
+| Imported as Wrapped    | ✓ | ✓ | ✓ | ✓ |
 
-<h1>DAO</h1>
-A modular system of governance contracts so that different requirements may be satisfied by writing simplified modules using Silidity inheritance
+### Token Trading
+Essentially an internally 1155 Uniswap.
 
-<h1>Token Client</h1> 
-<h3>A token aggregator to develop standard-agnostic token operations</h3> 
-<h3>Shared interface for functionality of ERC20, ERC721, ERC1155 or any future standard or custom token!</h3>
+### DAO
+A modular system of governance contracts so that different requirements may be satisfied by writing simplified modules using Solidity inheritance.
 
-## 🧐 Overview
+## Token Client
+### Overview
+[TokenClient](contracts/TokenClient.sol) is a smart contract written in Solidity to support fungible and non‑fungible token operations (such as sell/buy, swap, etc.) in a generic way, enabling elegant and future‑proof implementations of token algorithms.
 
-[TokenClient](contracts/TokenClient.sol) is a smart contract written in Solidity to support fungible and non-fungible token operations (such as sell/buy, swap, etc) in a generic way, making easy, quick, elegant, generic and future-proof implementations of token algorithms.
+Support new standards in your logic by simply registering a contract address in the client, which inherits from [TokenAbstraction](contracts/TokenAbstraction.sol). Your code interacts with the client instead of directly with ERC20, ERC721 or any other instance. This reduces redundancy when multiple standards share functionality such as `isApproved`, `transfer` or `balanceOf`.
 
-Support new standards in your logic by simply registering a contract address in the client, which inherits from [TokenAbstraction](contracts/TokenAbstraction.sol). Your code interacts with the client instead of the ERC20, ERC721, or any other instance (the client will do it for you). So you don't need to commit your code to protocols, you can focus on the fun stuff, and make more elegant dapps by eliminating redundancy where all tokens share functionality (like isApproved or transfer or balanceOf), which is the functionality that many marketplaces and complex operators need to operate with tokens.
+![Token Client Diagram](./imgs/TokenClientDiagram.PNG)
 
-<p align="center"><img src="./imgs/TokenClientDiagram.PNG" alt="TokenClientDiagram"></p>
- 
-You can reference a TokenClient instance on your dapp or inherit from TokenClient contract. To support the standards you want, you have to register them on the client using some [TokenAbstraction](contracts/TokenAbstraction.sol) concrete, such as [TokenERC20](contracts/concretes/TokenERC20.sol), [TokenERC721](contracts/concretes/TokenERC721.sol) or [TokenERC1155](contracts/concretes/TokenERC1155.sol) (or creating your own), which have a few view functions, the transfer function and doesn't have storage. These are in charge of calling the methods of each standard, but you only have to make calls to your TokenClient instance, using methods such as `isOwner`, `balanceOf`, `isApproved` or `transfer`. Then you can focus on the logic of your dapp without worrying about standards support, separating this decision from the implementation and allowing it to be defined at any time.
-
-For complete information check the README of the Token-client branch
+You can reference a TokenClient instance in your dapp or inherit from the TokenClient contract. To support the standards you want, register them on the client using a concrete implementation such as [TokenERC20](contracts/concretes/TokenERC20.sol), [TokenERC721](contracts/concretes/TokenERC721.sol) or [TokenERC1155](contracts/concretes/TokenERC1155.sol).
 
 ## Monolithic Token Factory
-The repository now includes a `MonolithicTokenFactory` capable of deploying ERC20, ERC721 and ERC1155 tokens. All tokens minted through the factory are mirrored into a single ERC1155 contract so they can be handled generically. Each deployment receives unique 1155 ids ensuring transfers stay synchronized across standards.
+The repository includes a `MonolithicTokenFactory` capable of deploying ERC20, ERC721 and ERC1155 tokens. All tokens minted through the factory are mirrored into a single ERC1155 contract so they can be handled generically. Each deployment receives unique 1155 ids ensuring transfers stay synchronized across standards.
+
+## Installation
+Clone the repository and install the dependencies:
+```bash
+git clone <repo-url>
+cd Tokens
+npm install
+```
+
+## Usage
+Compile and test the contracts using Hardhat:
+```bash
+npx hardhat compile
+npx hardhat test
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+This project is licensed under the ISC license. See `package.json` for details.
