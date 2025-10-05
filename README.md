@@ -1,7 +1,6 @@
 # Token Client & Factory
 
 *⚠️ Not audited*
-
 We intend to deploy a proxy upgradable trustless system on every EVM chain at the same address governed by the Trustless DAO.
 
 ## Table of Contents
@@ -12,6 +11,50 @@ We intend to deploy a proxy upgradable trustless system on every EVM chain at th
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
+
+In ERC1155WithERC20.sol, token ID 0 is a standard ERC-1155 token — it also implements the ERC-20-style interface and semantics on top of it. Here’s how that works conceptually:
+
+🧩 1. Token 0 is a normal ERC-1155 ID
+
+It exists in the same mapping structure as all other tokens:
+
+mapping(uint256 => mapping(address => uint256)) private _balances;
+
+
+So internally, balanceOf(account, 0) behaves the same as any other balanceOf(account, id).
+
+⚙️ 2. ERC-20 compatibility is layered over it
+
+The contract aliases the ERC-20 functions to the ERC-1155 logic for ID 0:
+
+ERC-20 call	What it actually does
+balanceOf(address)	returns balanceOf(address, 0)
+transfer(to, amount)	calls _safeTransferFrom(msg.sender, to, 0, amount, "")
+approve(spender, amount)	stores allowance data for token 0 only
+allowance(owner, spender)	returns allowance for token 0
+transferFrom(from, to, amount)	same as ERC-1155 transfer for id 0
+
+That way:
+
+Wallets or DEXs expecting an ERC-20 can interact with token 0 directly.
+
+Dapps using ERC-1155 calls can still treat token 0 like any other ID.
+
+🔄 3. Effectively: one storage model, two interfaces
+
+The ERC-1155 implementation provides the single storage + transfer system.
+The ERC-20 compatibility functions simply point to token 0 in that same system.
+No duplication — just a unified structure.
+
+✅ 4. Practical advantage
+
+This means:
+
+No code path divergence for ID 0 — security and balance logic are consistent.
+
+You can mint, burn, and transfer token 0 using ERC-1155 functions, and everything stays in sync with ERC-20 views.
+
+It’s easy to integrate with both marketplaces (ERC-1155) and DeFi (ERC-20).
 
 ## Features
 ### Token Factory
@@ -29,7 +72,7 @@ Each deployment utilizes MinimumProxyContract methodology.
 | Imported as Wrapped    | ✓ | ✓ | ✓ | ✓ |
 
 ### Token Trading
-Essentially an internally 1155 Uniswap.
+[Niftyswap](https://github.com/0xsequence/niftyswap)
 
 ### DAO
 A modular system of governance contracts so that different requirements may be satisfied by writing simplified modules using Solidity inheritance.
